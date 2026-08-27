@@ -39,21 +39,15 @@ export default function RootLayout() {
     name="congratulations"
     options={{
       headerShown: false,
-      presentation: 'transparentModal',
-      animation: 'fade',
-      contentStyle: {
+      presentation: 'transparentModal',  // This means the Congratulations screen behaves like a 
+      animation: 'fade',                 // transparent modal and fades in, which matches the popup-style
+      contentStyle: {                    // design you're using.
         backgroundColor: 'transparent',
       },
     }}
   />
 
-        <Stack.Screen
-          name="modal"
-          options={{
-            presentation: 'modal',
-            title: 'Modal',
-          }}
-        />
+        
       </Stack>
 
       <StatusBar style="auto" />
