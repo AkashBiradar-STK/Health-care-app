@@ -8,9 +8,9 @@ import {
   View,
 } from 'react-native';
 
-export default function CongratulationsScreen() {
+import { Colors } from '@/constants/theme';
 
-  // Automatically go to Sign In after 4 seconds
+export default function CongratulationsScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/signin');
@@ -21,31 +21,25 @@ export default function CongratulationsScreen() {
 
   return (
     <View style={styles.overlay}>
-
       <View style={styles.popup}>
 
-        {/* ================= SUCCESS ICON ================= */}
-
+        {/* Success Icon */}
         <View style={styles.successCircle}>
-
           <View style={styles.shield}>
             <Ionicons
               name="checkmark"
               size={38}
-              color="#1C2A3A"
+              color={Colors.primary}
             />
           </View>
-
         </View>
 
-        {/* ================= TITLE ================= */}
-
+        {/* Title */}
         <Text style={styles.title}>
           Congratulations!
         </Text>
 
-        {/* ================= DESCRIPTION ================= */}
-
+        {/* Description */}
         <Text style={styles.description}>
           Your account is ready to use. You will
           {'\n'}
@@ -54,140 +48,78 @@ export default function CongratulationsScreen() {
           few seconds...
         </Text>
 
-        {/* ================= LOADING ================= */}
-
+        {/* Loading */}
         <View style={styles.loaderContainer}>
           <ActivityIndicator
             size="large"
-            color="#1C2A3A"
+            color={Colors.primary}
           />
         </View>
 
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  // =====================================================
-  // BACKGROUND OVERLAY
-  // =====================================================
-
   overlay: {
     flex: 1,
-
-    backgroundColor: 'rgba(0, 0, 0, 0.38)',
-
+    backgroundColor: Colors.overlay,
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  // =====================================================
-  // POPUP
-  // =====================================================
 
   popup: {
     width: 337,
     height: 417,
-
     maxWidth: '90%',
-
-    backgroundColor: '#FFFFFF',
-
+    backgroundColor: Colors.white,
     borderRadius: 48,
-
     alignItems: 'center',
-
     paddingTop: 40,
     paddingHorizontal: 32,
   },
 
-  // =====================================================
-  // SUCCESS CIRCLE
-  // =====================================================
-
   successCircle: {
     width: 155,
     height: 155,
-
     borderRadius: 78,
-
-    backgroundColor: '#A5D6CC',
-
+    backgroundColor: Colors.successLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  // =====================================================
-  // SHIELD
-  // =====================================================
 
   shield: {
     width: 64,
     height: 72,
-
-    backgroundColor: '#FFFFFF',
-
+    backgroundColor: Colors.white,
     borderRadius: 12,
-
     alignItems: 'center',
     justifyContent: 'center',
-
-    transform: [
-      {
-        scaleY: 1.05,
-      },
-    ],
   },
-
-  // =====================================================
-  // TITLE
-  // =====================================================
 
   title: {
     marginTop: 32,
-
     fontSize: 23,
     lineHeight: 28,
-
     fontWeight: '700',
-
-    color: '#1C2A3A',
-
+    color: Colors.primary,
     textAlign: 'center',
   },
-
-  // =====================================================
-  // DESCRIPTION
-  // =====================================================
 
   description: {
     marginTop: 12,
-
     fontSize: 15,
     lineHeight: 24,
-
-    fontWeight: '400',
-
-    color: '#6B7280',
-
+    color: Colors.secondaryText,
     textAlign: 'center',
   },
 
-  // =====================================================
-  // LOADING INDICATOR
-  // =====================================================
-
   loaderContainer: {
     marginTop: 28,
-
     width: 55,
     height: 55,
-
     alignItems: 'center',
     justifyContent: 'center',
   },
-
 });

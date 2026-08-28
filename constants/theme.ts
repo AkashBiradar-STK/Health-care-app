@@ -1,49 +1,57 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
 export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+  primary: '#1C2A3A',
+  white: '#FFFFFF',
+
+  text: '#374151',
+  secondaryText: '#737D8D',
+  descriptionText: '#858585',
+  placeholder: '#9CA3AF',
+
+  border: '#D6DBE2',
+  lightBorder: '#E0E4E9',
+
+  inputBackground: '#F8F9FA',
+  profileBackground: '#F3F4F6',
+
+  disabled: '#CBD1D8',
+
+  link: '#2874D0',
+
+  successLight: '#A5D6CC',
+
+  overlay: 'rgba(0, 0, 0, 0.38)',
+
+  google: '#4285F4',
+  facebook: '#1877F2',
+
+  onboardingBackground: '#252525',
+  onboardingPurple: '#AAA1CF',
+  onboardingPink: '#D58E96',
+  onboardingPeach: '#D5A99A',
+  onboardingTeal: '#4B9F98',
+  onboardingLogo: '#39246D',
+
+  imageBackground: '#E8EEEE',
+  paginationInactive: '#B7B7B7',
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
+
   default: {
     sans: 'normal',
     serif: 'serif',
     rounded: 'normal',
     mono: 'monospace',
   },
+
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",

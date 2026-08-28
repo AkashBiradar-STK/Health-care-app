@@ -13,8 +13,11 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider
+      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    >
       <Stack>
+
         <Stack.Screen
           name="onboarding"
           options={{ headerShown: false }}
@@ -27,7 +30,7 @@ export default function RootLayout() {
 
         <Stack.Screen
           name="signin"
-          options={{ headerShown: false }}  
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
@@ -35,19 +38,18 @@ export default function RootLayout() {
           options={{ headerShown: false }}
         />
 
-          <Stack.Screen
-    name="congratulations"
-    options={{
-      headerShown: false,
-      presentation: 'transparentModal',  // This means the Congratulations screen behaves like a 
-      animation: 'fade',                 // transparent modal and fades in, which matches the popup-style
-      contentStyle: {                    // design you're using.
-        backgroundColor: 'transparent',
-      },
-    }}
-  />
+        <Stack.Screen
+          name="congratulations"
+          options={{
+            headerShown: false,
+            presentation: 'transparentModal',
+            animation: 'fade',
+            contentStyle: {
+              backgroundColor: 'transparent',
+            },
+          }}
+        />
 
-        
       </Stack>
 
       <StatusBar style="auto" />

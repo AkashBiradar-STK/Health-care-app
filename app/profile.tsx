@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import KeyboardAwareScrollView from '@/components/reusable/KeyboardAwareScrollView';
 import {
   Alert,
   Image,
@@ -13,14 +14,18 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 
+import CustomButton from '@/components/reusable/CustomButton';
+import FormInput from '@/components/reusable/FormInput';
+import KeyboardAwareScrollView from '@/components/reusable/KeyboardAwareScrollView';
+import { Colors } from '@/constants/theme';
+
+const genderOptions = ['Male', 'Female', 'Others'];
+
 export default function ProfileScreen() {
-  // -----------------------------
-  // FORM STATES
-  // -----------------------------
+  // ================= FORM STATES =================
 
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
@@ -34,15 +39,12 @@ export default function ProfileScreen() {
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
-  // -----------------------------
-  // DATE PICKER
-  // -----------------------------
+  // ================= DATE PICKER =================
 
   const handleDateChange = (
-    event: any,
-    selectedDate?: Date
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
   ) => {
-    // Android closes automatically
     if (Platform.OS === 'android') {
       setShowDatePicker(false);
     }
@@ -52,9 +54,7 @@ export default function ProfileScreen() {
     }
   };
 
-  // -----------------------------
-  // PROFILE PHOTO
-  // -----------------------------
+  // ================= PROFILE IMAGE =================
 
   const handlePickImage = async () => {
     const permission =
@@ -63,81 +63,58 @@ export default function ProfileScreen() {
     if (!permission.granted) {
       Alert.alert(
         'Permission Required',
-        'Please allow access to your photos to choose a profile picture.'
+        'Please allow access to your photos to choose a profile picture.',
       );
       return;
     }
 
-    const result =
-      await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      });
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
 
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
   };
 
-  // -----------------------------
-  // EMAIL VALIDATION
-  // -----------------------------
+  // ================= VALIDATION =================
 
-  const isValidEmail = (value: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  };
+  const isValidEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  // -----------------------------
-  // SAVE
-  // -----------------------------
+  const isFormComplete =
+    name.trim() &&
+    nickname.trim() &&
+    email.trim() &&
+    dateOfBirth &&
+    gender;
+
+  // ================= SAVE =================
 
   const handleSave = () => {
-    // Required fields
-    if (
-      !name.trim() ||
-      !nickname.trim() ||
-      !email.trim() ||
-      !dateOfBirth ||
-      !gender
-    ) {
+    if (!isFormComplete) {
       Alert.alert(
         'Incomplete Profile',
-        'Please complete your Name, Nickname, Email, Date of Birth and Gender.'
+        'Please complete your Name, Nickname, Email, Date of Birth and Gender.',
       );
-
       return;
     }
 
-    // Email validation
     if (!isValidEmail(email.trim())) {
       Alert.alert(
         'Invalid Email',
-        'Please enter a valid email address.'
+        'Please enter a valid email address.',
       );
-
       return;
     }
 
-    // Everything is valid
     router.push('/congratulations');
   };
 
-  // -----------------------------
-  // FORM COMPLETION
-  // -----------------------------
-
-  const isFormComplete =
-    name.trim().length > 0 &&
-    nickname.trim().length > 0 &&
-    email.trim().length > 0 &&
-    dateOfBirth !== null &&
-    gender !== '';
-
-  // -----------------------------
-  // FORMAT DATE
-  // -----------------------------
+  // ================= DATE FORMAT =================
 
   const formattedDate = dateOfBirth
     ? dateOfBirth.toLocaleDateString('en-GB', {
@@ -147,300 +124,213 @@ export default function ProfileScreen() {
       })
     : '';
 
-  // -----------------------------
-  // UI
-  // -----------------------------
-
   return (
     <SafeAreaView style={styles.container}>
-         
-          <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView>
 
+        {/* ================= HEADER ================= */}
 
-      {/* ================= HEADER ================= */}
-
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Ionicons
-            name="arrow-back"
-            size={30}
-            color="#374151"
-          />
-        </Pressable>
-
-        <Text style={styles.headerTitle}>
-          Fill Your Profile
-        </Text>
-      </View>
-
-      {/* ================= PROFILE PHOTO ================= */}
-
-      <View style={styles.profileSection}>
-
-        <View style={styles.profileCircle}>
-
-          {profileImage ? (
-            <Image
-              source={{ uri: profileImage }}
-              style={styles.profileImage}
-            />
-          ) : (
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
             <Ionicons
-              name="person"
-              size={85}
-              color="#E5E7EB"
+              name="arrow-back"
+              size={30}
+              color={Colors.text}
+            />
+          </Pressable>
+
+          <Text style={styles.headerTitle}>
+            Fill Your Profile
+          </Text>
+        </View>
+
+        {/* ================= PROFILE IMAGE ================= */}
+
+        <View style={styles.profileSection}>
+          <View style={styles.profileCircle}>
+            {profileImage ? (
+              <Image
+                source={{ uri: profileImage }}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Ionicons
+                name="person"
+                size={85}
+                color={Colors.disabled}
+              />
+            )}
+          </View>
+
+          <Pressable
+            style={styles.editButton}
+            onPress={handlePickImage}
+          >
+            <Ionicons
+              name="pencil"
+              size={17}
+              color={Colors.white}
+            />
+          </Pressable>
+        </View>
+
+        <Text style={styles.optionalText}>
+          Profile picture is optional
+        </Text>
+
+        {/* ================= FORM ================= */}
+
+        <View style={styles.form}>
+
+          <FormInput
+            placeholder="Michael Jordan"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="words"
+          />
+
+          <FormInput
+            placeholder="Nickname"
+            value={nickname}
+            onChangeText={setNickname}
+          />
+
+          <FormInput
+            placeholder="name@example.com"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+
+          {/* DATE OF BIRTH */}
+
+          <Pressable
+            style={styles.selectionInput}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Ionicons
+              name="calendar-outline"
+              size={19}
+              color={Colors.placeholder}
+            />
+
+            <Text
+              style={[
+                styles.placeholder,
+                dateOfBirth && styles.selectedText,
+              ]}
+            >
+              {formattedDate || 'Date of Birth'}
+            </Text>
+          </Pressable>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={dateOfBirth || new Date(2000, 0, 1)}
+              mode="date"
+              display="default"
+              maximumDate={new Date()}
+              onChange={handleDateChange}
             />
           )}
 
-        </View>
+          {/* GENDER */}
 
-        {/* Pencil button */}
-
-        <Pressable
-          style={styles.editButton}
-          onPress={handlePickImage}
-        >
-          <Ionicons
-            name="pencil"
-            size={17}
-            color="#FFFFFF"
-          />
-        </Pressable>
-
-      </View>
-
-      {/* Optional text */}
-
-      <Text style={styles.optionalText}>
-        Profile picture is optional
-      </Text>
-
-      {/* ================= FORM ================= */}
-
-      <View style={styles.form}>
-
-        {/* NAME */}
-
-        <TextInput
-          style={styles.input}
-          placeholder="Michael Jordan"
-          placeholderTextColor="#9CA3AF"
-          value={name}
-          onChangeText={setName}
-          autoCapitalize="words"
-        />
-
-        {/* NICKNAME */}
-
-        <TextInput
-          style={styles.input}
-          placeholder="Nickname"
-          placeholderTextColor="#9CA3AF"
-          value={nickname}
-          onChangeText={setNickname}
-        />
-
-        {/* EMAIL */}
-
-        <TextInput
-          style={styles.input}
-          placeholder="name@example.com"
-          placeholderTextColor="#9CA3AF"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-
-        {/* ================= DATE OF BIRTH ================= */}
-
-        <Pressable
-          style={styles.input}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Ionicons
-            name="calendar-outline"
-            size={19}
-            color="#9CA3AF"
-          />
-
-          <Text
-            style={[
-              styles.placeholder,
-              dateOfBirth && styles.selectedText,
-            ]}
-          >
-            {formattedDate || 'Date of Birth'}
-          </Text>
-        </Pressable>
-
-        {/* DATE PICKER */}
-
-        {showDatePicker && (
-          <DateTimePicker
-            value={dateOfBirth || new Date(2000, 0, 1)}
-            mode="date"
-            display="default"
-            maximumDate={new Date()}
-            onChange={handleDateChange}
-          />
-        )}
-
-        {/* ================= GENDER ================= */}
-
-        <Pressable
-          style={styles.input}
-          onPress={() => setShowGenderModal(true)}
-        >
-          <Text
-            style={[
-              styles.placeholder,
-              gender && styles.selectedText,
-            ]}
-          >
-            {gender || 'Gender'}
-          </Text>
-
-          <Ionicons
-            name="chevron-down"
-            size={19}
-            color="#9CA3AF"
-          />
-        </Pressable>
-
-        {/* ================= SAVE ================= */}
-
-        <Pressable
-          style={[
-            styles.saveButton,
-            !isFormComplete && styles.saveButtonDisabled,
-          ]}
-          disabled={!isFormComplete}
-          onPress={handleSave}
-        >
-          <Text style={styles.saveText}>
-            Save
-          </Text>
-        </Pressable>
-
-      </View>
-
-      {/* ================================================= */}
-      {/* GENDER MODAL */}
-      {/* ================================================= */}
-
-      <Modal
-        visible={showGenderModal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowGenderModal(false)}
-      >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setShowGenderModal(false)}
-        >
           <Pressable
-            style={styles.genderModal}
-            onPress={(event) => event.stopPropagation()}
+            style={styles.selectionInput}
+            onPress={() => setShowGenderModal(true)}
           >
-
-            <Text style={styles.genderTitle}>
-              Select Gender
+            <Text
+              style={[
+                styles.placeholder,
+                gender && styles.selectedText,
+              ]}
+            >
+              {gender || 'Gender'}
             </Text>
 
-            {/* MALE */}
-
-            <Pressable
-              style={styles.genderOption}
-              onPress={() => {
-                setGender('Male');
-                setShowGenderModal(false);
-              }}
-            >
-              <Text style={styles.genderOptionText}>
-                Male
-              </Text>
-
-              {gender === 'Male' && (
-                <Ionicons
-                  name="checkmark"
-                  size={22}
-                  color="#1C2A3A"
-                />
-              )}
-            </Pressable>
-
-            {/* FEMALE */}
-
-            <Pressable
-              style={styles.genderOption}
-              onPress={() => {
-                setGender('Female');
-                setShowGenderModal(false);
-              }}
-            >
-              <Text style={styles.genderOptionText}>
-                Female
-              </Text>
-
-              {gender === 'Female' && (
-                <Ionicons
-                  name="checkmark"
-                  size={22}
-                  color="#1C2A3A"
-                />
-              )}
-            </Pressable>
-
-            {/* OTHERS */}
-
-            <Pressable
-              style={styles.genderOption}
-              onPress={() => {
-                setGender('Others');
-                setShowGenderModal(false);
-              }}
-            >
-              <Text style={styles.genderOptionText}>
-                Others
-              </Text>
-
-              {gender === 'Others' && (
-                <Ionicons
-                  name="checkmark"
-                  size={22}
-                  color="#1C2A3A"
-                />
-              )}
-            </Pressable>
-
+            <Ionicons
+              name="chevron-down"
+              size={19}
+              color={Colors.placeholder}
+            />
           </Pressable>
-        </Pressable>
-      </Modal>
-    </KeyboardAwareScrollView>
 
+          {/* SAVE */}
+
+          <CustomButton
+            title="Save"
+            onPress={handleSave}
+            disabled={!isFormComplete}
+          />
+
+        </View>
+
+        {/* ================= GENDER MODAL ================= */}
+
+        <Modal
+          visible={showGenderModal}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowGenderModal(false)}
+        >
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setShowGenderModal(false)}
+          >
+            <Pressable
+              style={styles.genderModal}
+              onPress={(event) => event.stopPropagation()}
+            >
+              <Text style={styles.genderTitle}>
+                Select Gender
+              </Text>
+
+              {genderOptions.map((option) => (
+                <Pressable
+                  key={option}
+                  style={styles.genderOption}
+                  onPress={() => {
+                    setGender(option);
+                    setShowGenderModal(false);
+                  }}
+                >
+                  <Text style={styles.genderOptionText}>
+                    {option}
+                  </Text>
+
+                  {gender === option && (
+                    <Ionicons
+                      name="checkmark"
+                      size={22}
+                      color={Colors.primary}
+                    />
+                  )}
+                </Pressable>
+              ))}
+            </Pressable>
+          </Pressable>
+        </Modal>
+
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
-  // ==========================================
-  // CONTAINER
-  // ==========================================
+  // ================= CONTAINER =================
 
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
   },
 
-  // ==========================================
-  // HEADER
-  // ==========================================
+  // ================= HEADER =================
 
   header: {
     height: 170,
@@ -456,12 +346,10 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#374151',
+    color: Colors.text,
   },
 
-  // ==========================================
-  // PROFILE PHOTO
-  // ==========================================
+  // ================= PROFILE IMAGE =================
 
   profileSection: {
     height: 170,
@@ -474,7 +362,7 @@ const styles = StyleSheet.create({
     width: 155,
     height: 155,
     borderRadius: 80,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.profileBackground,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -492,82 +380,53 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: '#1C2A3A',
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   optionalText: {
     textAlign: 'center',
-    color: '#9CA3AF',
+    color: Colors.placeholder,
     fontSize: 11,
     marginTop: -8,
     marginBottom: 12,
   },
 
-  // ==========================================
-  // FORM
-  // ==========================================
+  // ================= FORM =================
 
   form: {
     paddingHorizontal: 24,
     gap: 16,
   },
 
-  input: {
+  selectionInput: {
     width: '100%',
     height: 45,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: Colors.border,
     borderRadius: 8,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Colors.inputBackground,
     paddingHorizontal: 16,
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
 
   placeholder: {
-    color: '#9CA3AF',
+    color: Colors.placeholder,
     fontSize: 14,
   },
 
   selectedText: {
-    color: '#374151',
+    color: Colors.text,
   },
 
-  // ==========================================
-  // SAVE BUTTON
-  // ==========================================
-
-  saveButton: {
-    width: '100%',
-    height: 48,
-    borderRadius: 55,
-    backgroundColor: '#1C2A3A',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-  },
-
-  saveButtonDisabled: {
-    backgroundColor: '#CBD1D8',
-  },
-
-  saveText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-
-  // ==========================================
-  // GENDER MODAL
-  // ==========================================
+  // ================= GENDER MODAL =================
 
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.45)',
+    backgroundColor: Colors.overlay,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
@@ -575,7 +434,7 @@ const styles = StyleSheet.create({
 
   genderModal: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
     borderRadius: 18,
     paddingHorizontal: 20,
     paddingVertical: 18,
@@ -584,7 +443,7 @@ const styles = StyleSheet.create({
   genderTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1C2A3A',
+    color: Colors.primary,
     marginBottom: 8,
   },
 
@@ -594,11 +453,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#EEF0F2',
+    borderBottomColor: Colors.lightBorder,
   },
 
   genderOptionText: {
     fontSize: 15,
-    color: '#374151',
+    color: Colors.text,
   },
 });

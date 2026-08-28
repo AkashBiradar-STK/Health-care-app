@@ -1,134 +1,98 @@
-import React from 'react';
-import {
-  Image,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 
+import CustomButton from '@/components/reusable/CustomButton';
+import CustomInput from '@/components/reusable/CustomInput';
+import SocialButton from '@/components/reusable/SocialButton';
+import { Colors } from '@/constants/theme';
+
 export default function SignupScreen() {
+  const handleCreateAccount = () => {
+    router.push('/profile');
+  };
+
+  const handleSignIn = () => {
+    router.push('/signin');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
 
-        {/* LOGO */}
+        {/* Logo */}
         <View style={styles.logoContainer}>
           <Image
             source={require('@/assets/images/onboarding/logo.png')}
             style={styles.logo}
             resizeMode="contain"
           />
-
         </View>
 
-        {/* TITLE */}
-        <Text style={styles.title}>Create Account</Text>
+        {/* Title */}
+        <Text style={styles.title}>
+          Create Account
+        </Text>
 
         <Text style={styles.subtitle}>
           We are here to help you!
         </Text>
 
-        {/* NAME */}
-        <View style={styles.inputContainer}>
-          <MaterialCommunityIcons
-            name="account-outline"
-            size={20}
-            color="#9AA5B5"
-          />
-
-          <TextInput
+        {/* Inputs */}
+        <View style={styles.inputsContainer}>
+          <CustomInput
+            icon="account-outline"
             placeholder="Your Name"
-            placeholderTextColor="#9AA5B5"
-            style={styles.input}
-          />
-        </View>
-
-        {/* EMAIL */}
-        <View style={styles.inputContainer}>
-          <MaterialCommunityIcons
-            name="email-outline"
-            size={20}
-            color="#9AA5B5"
           />
 
-          <TextInput
+          <CustomInput
+            icon="email-outline"
             placeholder="Your Email"
-            placeholderTextColor="#9AA5B5"
             keyboardType="email-address"
             autoCapitalize="none"
-            style={styles.input}
-          />
-        </View>
-
-        {/* PASSWORD */}
-        <View style={styles.inputContainer}>
-          <MaterialCommunityIcons
-            name="lock-outline"
-            size={20}
-            color="#9AA5B5"
           />
 
-          <TextInput
+          <CustomInput
+            icon="lock-outline"
             placeholder="Password"
-            placeholderTextColor="#9AA5B5"
             secureTextEntry
-            style={styles.input}
           />
         </View>
 
-        {/* CREATE ACCOUNT */}
-<Pressable
-  style={styles.createButton}
-  onPress={() => router.push('/profile')}
->
-  <Text style={styles.createButtonText}>Create Account</Text>
-</Pressable>
+        {/* Create Account */}
+        <CustomButton
+          title="Create Account"
+          onPress={handleCreateAccount}
+        />
 
         {/* OR */}
         <View style={styles.orContainer}>
           <View style={styles.line} />
-          <Text style={styles.orText}>or</Text>
+
+          <Text style={styles.orText}>
+            or
+          </Text>
+
           <View style={styles.line} />
         </View>
 
-        {/* GOOGLE */}
-        <Pressable style={styles.socialButton}>
-          <FontAwesome
-            name="google"
-            size={20}
-            color="#4285F4"
-          />
+        {/* Social Buttons */}
+        <SocialButton
+          icon="google"
+          title="Continue with Google"
+        />
 
-          <Text style={styles.socialText}>
-            Continue with Google
-          </Text>
-        </Pressable>
+        <SocialButton
+          icon="facebook"
+          title="Continue with Facebook"
+        />
 
-        {/* FACEBOOK */}
-        <Pressable style={styles.socialButton}>
-          <FontAwesome
-            name="facebook"
-            size={20}
-            color="#1877F2"
-          />
-
-          <Text style={styles.socialText}>
-            Continue with Facebook
-          </Text>
-        </Pressable>
-
-        {/* SIGN IN */}
+        {/* Sign In */}
         <View style={styles.signInContainer}>
           <Text style={styles.accountText}>
-            Do you have an account ?
+            Do you have an account?
           </Text>
 
-          <Pressable onPress={() => router.push('/signin')}>
+          <Pressable onPress={handleSignIn}>
             <Text style={styles.signInText}>
               Sign In
             </Text>
@@ -143,7 +107,7 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
   },
 
   content: {
@@ -151,8 +115,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 33,
     alignItems: 'center',
   },
-
-  /* LOGO */
 
   logoContainer: {
     alignItems: 'center',
@@ -163,126 +125,46 @@ const styles = StyleSheet.create({
   logo: {
     width: 82,
     height: 82,
-
-    // If your logo PNG is white,
-    // this makes it dark navy like Figma.
-    tintColor: '#1C2B39',
+    tintColor: Colors.primary,
   },
-
-  logoText: {
-    marginTop: 5,
-    fontSize: 18,
-    color: '#687284',
-    fontWeight: '400',
-  },
-
-  /* TITLE */
 
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1C2B39',
+    color: Colors.primary,
     marginBottom: 8,
   },
 
   subtitle: {
     fontSize: 13,
-    color: '#737D8D',
+    color: Colors.secondaryText,
     marginBottom: 28,
   },
 
-  /* INPUTS */
-
-  inputContainer: {
+  inputsContainer: {
     width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#D6DBE2',
-    borderRadius: 7,
-    backgroundColor: '#F8F9FA',
-
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    paddingHorizontal: 14,
-    marginBottom: 10,
+    gap: 10,
+    marginBottom: 11,
   },
-
-  input: {
-    flex: 1,
-    marginLeft: 10,
-
-    fontSize: 13,
-    color: '#1C2B39',
-  },
-
-  /* CREATE BUTTON */
-
-  createButton: {
-    width: '100%',
-    height: 42,
-    borderRadius: 22,
-
-    backgroundColor: '#1C2B39',
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    marginTop: 11,
-  },
-
-  createButtonText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-
-  /* OR */
 
   orContainer: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-
     marginVertical: 25,
   },
 
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#DDE1E6',
+    backgroundColor: Colors.lightBorder,
   },
 
   orText: {
     marginHorizontal: 20,
-    color: '#737D8D',
+    color: Colors.secondaryText,
     fontSize: 14,
   },
-
-  /* SOCIAL BUTTONS */
-
-  socialButton: {
-    width: '100%',
-    height: 38,
-
-    borderWidth: 1,
-    borderColor: '#E0E4E9',
-    borderRadius: 7,
-
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    marginBottom: 10,
-  },
-
-  socialText: {
-    marginLeft: 10,
-    color: '#1C2B39',
-    fontSize: 13,
-  },
-
-  /* SIGN IN */
 
   signInContainer: {
     flexDirection: 'row',
@@ -291,12 +173,12 @@ const styles = StyleSheet.create({
   },
 
   accountText: {
-    color: '#737D8D',
+    color: Colors.secondaryText,
     fontSize: 13,
   },
 
   signInText: {
-    color: '#2874D0',
+    color: Colors.link,
     fontSize: 13,
     marginLeft: 4,
   },
