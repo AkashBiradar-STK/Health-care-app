@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 export const Colors = {
   primary: '#1C2A3A',
   white: '#FFFFFF',
+  background: '#FFFFFF',
 
   text: '#374151',
   secondaryText: '#737D8D',

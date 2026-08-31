@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 
+import {registerForNotificationsAsync} from '@/utils/notifications';
+
 import { Colors } from '@/constants/theme';
 
 const onboardingData = [
@@ -34,6 +36,11 @@ const onboardingData = [
 
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(-1);
+
+// Push notification setup
+useEffect(() => {
+  registerForNotificationsAsync();
+}, []);
 
   // HealthPal intro automatically moves
   // to the first onboarding screen.

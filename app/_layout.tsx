@@ -5,10 +5,6 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export const unstable_settings = {
-  anchor: 'onboarding',
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -17,7 +13,6 @@ export default function RootLayout() {
       value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
       <Stack>
-
         <Stack.Screen
           name="onboarding"
           options={{ headerShown: false }}
@@ -49,7 +44,6 @@ export default function RootLayout() {
             },
           }}
         />
-
       </Stack>
 
       <StatusBar style="auto" />

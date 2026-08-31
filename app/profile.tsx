@@ -94,25 +94,26 @@ export default function ProfileScreen() {
 
   // ================= SAVE =================
 
-  const handleSave = () => {
-    if (!isFormComplete) {
-      Alert.alert(
-        'Incomplete Profile',
-        'Please complete your Name, Nickname, Email, Date of Birth and Gender.',
-      );
-      return;
-    }
+const handleSave = async () => {
+  if (!isFormComplete) {
+    Alert.alert(
+      'Incomplete Profile',
+      'Please complete your Name, Nickname, Email, Date of Birth and Gender.',
+    );
+    return;
+  }
 
-    if (!isValidEmail(email.trim())) {
-      Alert.alert(
-        'Invalid Email',
-        'Please enter a valid email address.',
-      );
-      return;
-    }
+  if (!isValidEmail(email.trim())) {
+    Alert.alert(
+      'Invalid Email',
+      'Please enter a valid email address.',
+    );
+    return;
+  }
 
-    router.push('/congratulations');
-  };
+  // Profile is valid and completed
+  router.push('/congratulations');
+};
 
   // ================= DATE FORMAT =================
 
