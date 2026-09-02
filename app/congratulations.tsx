@@ -13,7 +13,7 @@ import { Colors } from '@/constants/theme';
 export default function CongratulationsScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('/signin');
+      router.replace('/home');
     }, 4000);
 
     return () => clearTimeout(timer);
