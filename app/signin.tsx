@@ -89,11 +89,14 @@ export default function SigninScreen() {
         />
 
         {/* Forgot Password */}
-        <Pressable style={styles.forgotButton}>
-          <Text style={styles.forgotText}>
-            Forgot password?
-          </Text>
-        </Pressable>
+<Pressable
+  style={styles.forgotButton}
+  onPress={() => router.push('/forgot-password')}
+>
+  <Text style={styles.forgotText}>
+    Forgot password?
+  </Text>
+</Pressable>
 
         {/* Sign Up */}
         <View style={styles.signupContainer}>
