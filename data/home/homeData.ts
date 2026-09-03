@@ -1,43 +1,45 @@
+import { Colors } from '@/constants/theme';
+
 export const categories = [
   {
     name: 'Dentistry',
     icon: 'tooth-outline',
-    color: '#DC9497',
+    color: Colors.categoryDentistry,
   },
   {
     name: 'Cardiology',
     icon: 'heart-plus',
-    color: '#93C19E',
+    color: Colors.categoryCardiology,
   },
   {
     name: 'Pulmonology',
     icon: 'lungs',
-    color: '#F5AD7E',
+    color: Colors.categoryPulmonology,
   },
   {
     name: 'General',
     icon: 'stethoscope',
-    color: '#ACA1CD',
+    color: Colors.categoryGeneral,
   },
   {
     name: 'Neurology',
     icon: 'brain',
-    color: '#4D9B91',
+    color: Colors.categoryNeurology,
   },
   {
     name: 'Gastroenterology',
     icon: 'stomach',
-    color: '#E3A5B5',
+    color: Colors.categoryGastroenterology,
   },
   {
     name: 'Laboratory',
     icon: 'flask-outline',
-    color: '#8EB7D9',
+    color: Colors.categoryLaboratory,
   },
   {
     name: 'Vaccination',
     icon: 'needle',
-    color: '#D5B58A',
+    color: Colors.categoryVaccination,
   },
 ];
 

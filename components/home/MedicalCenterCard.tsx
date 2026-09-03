@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   Pressable,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'react-native';
 
 import { Colors } from '@/constants/theme';
 

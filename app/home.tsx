@@ -5,12 +5,12 @@ import {
   ScrollView,
   TextInput,
   Pressable,
+  Image,
 } from 'react-native';
 import {
   Ionicons,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
-import { Image } from 'react-native';
 
 import { Colors } from '@/constants/theme';
 import {
