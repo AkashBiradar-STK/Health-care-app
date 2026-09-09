@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { router } from 'expo-router';
 import {
   View,
   Text,
@@ -190,11 +191,11 @@ export default function HomeScreen() {
         <NavItem
           icon="location-outline"
           label="Location"
-          active={activeNav === 'location'}
-          onPress={() => setActiveNav('location')}
+          active={false}
+          onPress={() => router.push('/find-location')}
         />
 
-        <NavItem
+        <NavItem 
           icon="calendar-outline"
           label="Appointment"
           active={activeNav === 'appointment'}
