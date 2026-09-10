@@ -202,12 +202,12 @@ export default function HomeScreen() {
           onPress={() => setActiveNav('appointment')}
         />
 
-        <NavItem
-          icon="person-outline"
-          label="Profile"
-          active={activeNav === 'profile'}
-          onPress={() => setActiveNav('profile')}
-        />
+<NavItem
+  icon="person-outline"
+  label="Profile"
+  active={false}
+  onPress={() => router.push('/profile-dashboard')}
+/>
       </View>
     </View>
   );
