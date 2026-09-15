@@ -112,11 +112,11 @@ export default function HomeScreen() {
             Categories
           </Text>
 
-          <Pressable>
-            <Text style={styles.seeAll}>
-              See All
-            </Text>
-          </Pressable>
+<Pressable onPress={() => router.push('/all-doctors')}>
+  <Text style={styles.seeAll}>
+    See All
+  </Text>
+</Pressable>
         </View>
 
         <View style={styles.categoryGrid}>
@@ -156,11 +156,11 @@ export default function HomeScreen() {
             Nearby Medical Centers
           </Text>
 
-          <Pressable>
-            <Text style={styles.seeAll}>
-              See All
-            </Text>
-          </Pressable>
+<Pressable onPress={() => router.push('/find-location')}>
+  <Text style={styles.seeAll}>
+    See All
+  </Text>
+</Pressable>
         </View>
 
         <ScrollView
