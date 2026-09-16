@@ -14,11 +14,21 @@ type DoctorCardProps = {
     reviews: string;
     image: any;
   };
+  onPress?: () => void;
 };
 
-export default function DoctorCard({ doctor }: DoctorCardProps) {
+export default function DoctorCard({
+  doctor,
+  onPress,
+}: DoctorCardProps) {
   return (
-    <View style={styles.doctorCard}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.doctorCard,
+        pressed && styles.doctorCardPressed,
+      ]}
+    >
       <Image
         source={doctor.image}
         style={styles.doctorImage}
@@ -31,7 +41,12 @@ export default function DoctorCard({ doctor }: DoctorCardProps) {
             {doctor.name}
           </Text>
 
-          <Pressable style={styles.favoriteButton}>
+          <Pressable
+            style={styles.favoriteButton}
+            onPress={(event) => {
+              event.stopPropagation();
+            }}
+          >
             <Ionicons
               name="heart-outline"
               size={18}
@@ -64,6 +79,6 @@ export default function DoctorCard({ doctor }: DoctorCardProps) {
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }

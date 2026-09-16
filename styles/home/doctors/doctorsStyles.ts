@@ -151,6 +151,10 @@ export const styles = StyleSheet.create({
     elevation: 4,
   },
 
+  doctorCardPressed: {
+    opacity: 0.9,
+  },
+
   doctorImage: {
     width: 109,
     height: 109,

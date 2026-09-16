@@ -95,7 +95,17 @@ export default function AllDoctorsScreen() {
           data={filteredDoctors}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DoctorCard doctor={item} />
+          <DoctorCard
+  doctor={item}
+  onPress={() =>
+    router.push({
+      pathname: '/doctor-details',
+      params: {
+        doctorId: item.id,
+      },
+    })
+  }
+/>
           )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}
