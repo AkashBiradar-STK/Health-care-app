@@ -11,7 +11,7 @@ export type Doctor = {
 export const doctors: Doctor[] = [
   {
     id: 'doctor-1',
-    name: 'Dr. Arjun Mehta',
+    name: 'Dr. Ashwini Mehta',
     specialty: 'Cardiologist',
     location: 'Heart Care Hospital, Mumbai, India',
     rating: '4.9',
@@ -38,7 +38,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: 'doctor-4',
-    name: 'Dr. Emily Carter',
+    name: 'Dr. Abhi',
     specialty: 'Pediatrician',
     location: 'Little Stars Hospital, New York, USA',
     rating: '5',
@@ -65,7 +65,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: 'doctor-7',
-    name: 'Dr. Priya Nair',
+    name: 'Dr. Aditya Nair',
     specialty: 'Pulmonologist',
     location: 'Respira Health Center, Kochi, India',
     rating: '4.6',
