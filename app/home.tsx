@@ -58,7 +58,10 @@ export default function HomeScreen() {
             </Pressable>
           </View>
 
-          <Pressable style={styles.notificationButton}>
+          <Pressable
+  style={styles.notificationButton}
+  onPress={() => router.push('/notifications')}
+>
             <Ionicons
               name="notifications"
               size={21}
@@ -195,12 +198,12 @@ export default function HomeScreen() {
           onPress={() => router.push('/find-location')}
         />
 
-        <NavItem 
-          icon="calendar-outline"
-          label="Appointment"
-          active={activeNav === 'appointment'}
-          onPress={() => setActiveNav('appointment')}
-        />
+<NavItem
+  icon="calendar-outline"
+  label="Appointment"
+  active={false}
+  onPress={() => router.push('/my-bookings')}
+/>
 
 <NavItem
   icon="person-outline"

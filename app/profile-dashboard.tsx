@@ -23,11 +23,11 @@ const profileOptions = [
     icon: 'person-outline',
     onPress: () => router.push('/profile'),
   },
-  {
-    label: 'Favorite',
-    icon: 'heart-outline',
-    onPress: () => {},
-  },
+{
+  label: 'Favorite',
+  icon: 'heart-outline',
+  onPress: () => router.push('/favorites'),
+},
   {
     label: 'Notifications',
     icon: 'notifications-outline',
