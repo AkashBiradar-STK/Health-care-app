@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Image,
-  Pressable,
   Text,
   View,
 } from 'react-native';
@@ -20,20 +19,10 @@ type BookingCardProps = {
   };
 
   type: 'upcoming' | 'completed';
-
-  onCancel?: () => void;
-  onReschedule?: () => void;
-  onRebook?: () => void;
-  onReview?: () => void;
 };
 
 export default function BookingCard({
   booking,
-  type,
-  onCancel,
-  onReschedule,
-  onRebook,
-  onReview,
 }: BookingCardProps) {
   return (
     <View style={styles.card}>
@@ -82,53 +71,6 @@ export default function BookingCard({
             </Text>
           </View>
         </View>
-      </View>
-
-      <View style={styles.divider} />
-
-      {/* Buttons */}
-      <View style={styles.buttonRow}>
-        {type === 'upcoming' ? (
-          <>
-            <Pressable
-              style={styles.cancelButton}
-              onPress={onCancel}
-            >
-              <Text style={styles.cancelText}>
-                Cancel
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.rescheduleButton}
-              onPress={onReschedule}
-            >
-              <Text style={styles.rescheduleText}>
-                Reschedule
-              </Text>
-            </Pressable>
-          </>
-        ) : (
-          <>
-            <Pressable
-              style={styles.cancelButton}
-              onPress={onRebook}
-            >
-              <Text style={styles.cancelText}>
-                Re-Book
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.rescheduleButton}
-              onPress={onReview}
-            >
-              <Text style={styles.rescheduleText}>
-                Add Review
-              </Text>
-            </Pressable>
-          </>
-        )}
       </View>
     </View>
   );
@@ -211,42 +153,5 @@ const styles = {
     fontSize: 12,
     lineHeight: 18,
     color: Colors.secondaryText,
-  },
-
-  buttonRow: {
-    flexDirection: 'row' as const,
-    gap: 14,
-  },
-
-  cancelButton: {
-    flex: 1,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: '#E3E6EA',
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-  },
-
-  cancelText: {
-    fontSize: 13,
-    lineHeight: 20,
-    fontWeight: '700' as const,
-    color: Colors.primary,
-  },
-
-  rescheduleButton: {
-    flex: 1,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: Colors.primary,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-  },
-
-  rescheduleText: {
-    fontSize: 13,
-    lineHeight: 20,
-    fontWeight: '700' as const,
-    color: Colors.white,
   },
 };

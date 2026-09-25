@@ -62,14 +62,28 @@ export default function BookAppointmentScreen() {
   );
 
   /*
-   * Start with June 2023 to match your Figma.
+   * Today's date.
+   * Time is reset to midnight so only the date is compared.
+   */
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  /*
+   * Start the calendar on the current month.
    */
   const [currentMonth, setCurrentMonth] = useState(
-    new Date(2023, 5, 1)
+    new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1
+    )
   );
 
+  /*
+   * Select today by default.
+   */
   const [selectedDate, setSelectedDate] = useState(
-    new Date(2023, 5, 30)
+    new Date(today)
   );
 
   const [selectedHour, setSelectedHour] = useState(
@@ -111,9 +125,24 @@ export default function BookAppointmentScreen() {
   }, [currentMonth]);
 
   /*
-   * Previous month
+   * Check whether the currently displayed month
+   * is the same month as today.
+   */
+  const isCurrentMonth =
+    currentMonth.getFullYear() === today.getFullYear() &&
+    currentMonth.getMonth() === today.getMonth();
+
+  /*
+   * Previous month.
+   *
+   * Do not allow the calendar to move before
+   * the current month.
    */
   const goToPreviousMonth = () => {
+    if (isCurrentMonth) {
+      return;
+    }
+
     setCurrentMonth(
       (previousMonth) =>
         new Date(
@@ -125,7 +154,9 @@ export default function BookAppointmentScreen() {
   };
 
   /*
-   * Next month
+   * Next month.
+   *
+   * Future months are always allowed.
    */
   const goToNextMonth = () => {
     setCurrentMonth(
@@ -139,9 +170,30 @@ export default function BookAppointmentScreen() {
   };
 
   /*
+   * Check whether a calendar date is before today.
+   */
+  const isPastDate = (day: number) => {
+    const date = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      day
+    );
+
+    date.setHours(0, 0, 0, 0);
+
+    return date < today;
+  };
+
+  /*
    * Select a date.
+   *
+   * Past dates cannot be selected.
    */
   const selectDate = (day: number) => {
+    if (isPastDate(day)) {
+      return;
+    }
+
     setSelectedDate(
       new Date(
         currentMonth.getFullYear(),
@@ -185,6 +237,7 @@ export default function BookAppointmentScreen() {
       />
 
       <SafeAreaView style={styles.container}>
+
         {/* Header */}
         <View style={styles.header}>
           <Pressable
@@ -209,12 +262,14 @@ export default function BookAppointmentScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
+
           {/* Select Date */}
           <Text style={styles.sectionTitle}>
             Select Date
           </Text>
 
           <View style={styles.calendarCard}>
+
             {/* Month Header */}
             <View style={styles.monthHeader}>
               <Text style={styles.monthTitle}>
@@ -223,17 +278,25 @@ export default function BookAppointmentScreen() {
               </Text>
 
               <View style={styles.monthArrows}>
+
+                {/* Previous Month */}
                 <Pressable
                   onPress={goToPreviousMonth}
+                  disabled={isCurrentMonth}
                   style={styles.monthArrowButton}
                 >
                   <Ionicons
                     name="chevron-back"
                     size={20}
-                    color={Colors.secondaryText}
+                    color={
+                      isCurrentMonth
+                        ? '#D1D5DB'
+                        : Colors.secondaryText
+                    }
                   />
                 </Pressable>
 
+                {/* Next Month */}
                 <Pressable
                   onPress={goToNextMonth}
                   style={styles.monthArrowButton}
@@ -244,6 +307,7 @@ export default function BookAppointmentScreen() {
                     color={Colors.primary}
                   />
                 </Pressable>
+
               </View>
             </View>
 
@@ -262,6 +326,8 @@ export default function BookAppointmentScreen() {
             {/* Calendar */}
             <View style={styles.calendarGrid}>
               {calendarDays.map((day, index) => {
+
+                // Empty calendar cells
                 if (day === null) {
                   return (
                     <View
@@ -271,16 +337,23 @@ export default function BookAppointmentScreen() {
                   );
                 }
 
-                const selected = isSelectedDate(day);
+                const selected =
+                  isSelectedDate(day);
+
+                const past =
+                  isPastDate(day);
 
                 return (
                   <Pressable
                     key={`day-${day}`}
                     onPress={() => selectDate(day)}
+                    disabled={past}
                     style={[
                       styles.dateCell,
                       selected &&
                         styles.dateCellSelected,
+                      past &&
+                        styles.dateCellDisabled,
                     ]}
                   >
                     <Text
@@ -288,6 +361,8 @@ export default function BookAppointmentScreen() {
                         styles.dateText,
                         selected &&
                           styles.dateTextSelected,
+                        past &&
+                          styles.dateTextDisabled,
                       ]}
                     >
                       {day}
@@ -296,6 +371,7 @@ export default function BookAppointmentScreen() {
                 );
               })}
             </View>
+
           </View>
 
           {/* Select Hour */}
@@ -305,6 +381,7 @@ export default function BookAppointmentScreen() {
 
           <View style={styles.hoursGrid}>
             {hours.map((hour) => {
+
               const selected =
                 selectedHour === hour;
 
@@ -333,30 +410,39 @@ export default function BookAppointmentScreen() {
               );
             })}
           </View>
+
         </ScrollView>
 
         {/* Confirm */}
         <View style={styles.bottomContainer}>
-<Pressable
-  style={styles.confirmButton}
-  onPress={() =>
-    router.push({
-      pathname: '/appointment_confirmation',
-      params: {
-        doctorId: doctor.id,
-        year: selectedDate.getFullYear().toString(),
-        month: selectedDate.getMonth().toString(),
-        day: selectedDate.getDate().toString(),
-        hour: selectedHour,
-      },
-    })
-  }
->
+          <Pressable
+            style={styles.confirmButton}
+            onPress={() =>
+              router.push({
+                pathname:
+                  '/appointment_confirmation',
+                params: {
+                  doctorId: doctor.id,
+                  year: selectedDate
+                    .getFullYear()
+                    .toString(),
+                  month: selectedDate
+                    .getMonth()
+                    .toString(),
+                  day: selectedDate
+                    .getDate()
+                    .toString(),
+                  hour: selectedHour,
+                },
+              })
+            }
+          >
             <Text style={styles.confirmButtonText}>
               Confirm
             </Text>
           </Pressable>
         </View>
+
       </SafeAreaView>
     </>
   );
@@ -435,7 +521,7 @@ const styles = {
   monthHeader: {
     height: 28,
     flexDirection: 'row' as const,
-    alignItems: 'center',
+    alignItems: 'center' as const,
     justifyContent: 'space-between' as const,
   },
 
@@ -448,7 +534,7 @@ const styles = {
 
   monthArrows: {
     flexDirection: 'row' as const,
-    alignItems: 'center',
+    alignItems: 'center' as const,
     gap: 6,
   },
 
@@ -494,6 +580,10 @@ const styles = {
     alignSelf: 'center' as const,
   },
 
+  dateCellDisabled: {
+    opacity: 0.35,
+  },
+
   dateText: {
     fontSize: 11,
     lineHeight: 16,
@@ -504,6 +594,10 @@ const styles = {
   dateTextSelected: {
     color: Colors.white,
     fontWeight: '700' as const,
+  },
+
+  dateTextDisabled: {
+    color: '#C4C8CE',
   },
 
   hourTitle: {
