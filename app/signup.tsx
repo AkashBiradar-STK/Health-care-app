@@ -1,9 +1,15 @@
-import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { router } from 'expo-router';
 
 import CustomButton from '@/components/reusable/CustomButton';
 import CustomInput from '@/components/reusable/CustomInput';
-import SocialButton from '@/components/reusable/SocialButton';
 import { Colors } from '@/constants/theme';
 
 export default function SignupScreen() {
@@ -62,28 +68,6 @@ export default function SignupScreen() {
         <CustomButton
           title="Create Account"
           onPress={handleCreateAccount}
-        />
-
-        {/* OR */}
-        <View style={styles.orContainer}>
-          <View style={styles.line} />
-
-          <Text style={styles.orText}>
-            or
-          </Text>
-
-          <View style={styles.line} />
-        </View>
-
-        {/* Social Buttons */}
-        <SocialButton
-          icon="google"
-          title="Continue with Google"
-        />
-
-        <SocialButton
-          icon="facebook"
-          title="Continue with Facebook"
         />
 
         {/* Sign In */}
@@ -147,29 +131,10 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
 
-  orContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 25,
-  },
-
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.lightBorder,
-  },
-
-  orText: {
-    marginHorizontal: 20,
-    color: Colors.secondaryText,
-    fontSize: 14,
-  },
-
   signInContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 24,
   },
 
   accountText: {

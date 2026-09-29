@@ -10,7 +10,6 @@ import { router } from 'expo-router';
 
 import CustomButton from '@/components/reusable/CustomButton';
 import CustomInput from '@/components/reusable/CustomInput';
-import SocialButton from '@/components/reusable/SocialButton';
 import { Colors } from '@/constants/theme';
 
 export default function SigninScreen() {
@@ -66,37 +65,15 @@ export default function SigninScreen() {
           onPress={handleSignIn}
         />
 
-        {/* OR */}
-        <View style={styles.orContainer}>
-          <View style={styles.line} />
-
-          <Text style={styles.orText}>
-            or
-          </Text>
-
-          <View style={styles.line} />
-        </View>
-
-        {/* Social Buttons */}
-        <SocialButton
-          icon="google"
-          title="Sign In with Google"
-        />
-
-        <SocialButton
-          icon="facebook"
-          title="Sign In with Facebook"
-        />
-
         {/* Forgot Password */}
-<Pressable
-  style={styles.forgotButton}
-  onPress={() => router.push('/forgot-password')}
->
-  <Text style={styles.forgotText}>
-    Forgot password?
-  </Text>
-</Pressable>
+        <Pressable
+          style={styles.forgotButton}
+          onPress={() => router.push('/forgot-password')}
+        >
+          <Text style={styles.forgotText}>
+            Forgot password?
+          </Text>
+        </Pressable>
 
         {/* Sign Up */}
         <View style={styles.signupContainer}>
@@ -159,27 +136,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  orContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 25,
-  },
-
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.lightBorder,
-  },
-
-  orText: {
-    marginHorizontal: 20,
-    color: Colors.secondaryText,
-    fontSize: 13,
-  },
-
   forgotButton: {
-    marginTop: 8,
+    marginTop: 18,
   },
 
   forgotText: {
@@ -190,7 +148,7 @@ const styles = StyleSheet.create({
   signupContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 32,
   },
 
   accountText: {
