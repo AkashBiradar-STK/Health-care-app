@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -7,7 +7,7 @@ import {
   Pressable,
   Text,
 } from 'react-native';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import DoctorCard from '@/components/doctors/DoctorCard';
@@ -17,6 +17,7 @@ import { styles } from '@/styles/home/doctors/doctorsStyles';
 
 const filters = [
   'All',
+  'Dentistry',
   'Cardiology',
   'Dermatology',
   'Neurology',
@@ -24,26 +25,35 @@ const filters = [
   'Orthopedic',
   'Pediatrics',
   'Pulmonology',
+  'Gastroenterology',
   'General Physician',
 ];
-
 export default function AllDoctorsScreen() {
+  const { specialty } = useLocalSearchParams<{ specialty?: string }>();
+
   const [search, setSearch] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
 
+  useEffect(() => {
+    if (specialty) {
+      setSelectedFilter(specialty);
+    }
+  }, [specialty]);
   const filteredDoctors = useMemo(() => {
     const searchText = search.trim().toLowerCase();
 
-    const specialtyMap: Record<string, string> = {
-      Cardiology: 'Cardiologist',
-      Dermatology: 'Dermatologist',
-      Neurology: 'Neurologist',
-      Gynecology: 'Gynecologist',
-      Orthopedic: 'Orthopedic Surgery',
-      Pediatrics: 'Pediatrician',
-      Pulmonology: 'Pulmonologist',
-      'General Physician': 'General Physician',
-    };
+const specialtyMap: Record<string, string> = {
+  Dentistry: 'Dentist',
+  Cardiology: 'Cardiologist',
+  Dermatology: 'Dermatologist',
+  Neurology: 'Neurologist',
+  Gynecology: 'Gynecologist',
+  Orthopedic: 'Orthopedic Surgery',
+  Pediatrics: 'Pediatrician',
+  Pulmonology: 'Pulmonologist',
+  Gastroenterology: 'Gastroenterologist',
+  'General Physician': 'General Physician',
+};
 
     return doctors.filter((doctor) => {
       const matchesSearch =

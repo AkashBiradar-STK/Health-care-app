@@ -123,11 +123,19 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.categoryGrid}>
-          {categories.map((category) => (
-            <Pressable
-              key={category.name}
-              style={styles.categoryItem}
-            >
+{categories.map((category) => (
+  <Pressable
+    key={category.name}
+    style={styles.categoryItem}
+    onPress={() =>
+      router.push({
+        pathname: '/all-doctors',
+        params: {
+          specialty: category.name,
+        },
+      })
+    }
+  >
               <View
                 style={[
                   styles.categoryIcon,

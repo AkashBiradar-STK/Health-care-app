@@ -1,49 +1,17 @@
-import { Colors } from '@/constants/theme';
 
 export const categories = [
-  {
-    name: 'Dentistry',
-    icon: 'tooth-outline',
-    color: Colors.categoryDentistry,
-  },
-  {
-    name: 'Cardiology',
-    icon: 'heart-plus',
-    color: Colors.categoryCardiology,
-  },
-  {
-    name: 'Pulmonology',
-    icon: 'lungs',
-    color: Colors.categoryPulmonology,
-  },
-  {
-    name: 'General',
-    icon: 'stethoscope',
-    color: Colors.categoryGeneral,
-  },
-  {
-    name: 'Neurology',
-    icon: 'brain',
-    color: Colors.categoryNeurology,
-  },
-  {
-    name: 'Gastroenterology',
-    icon: 'stomach',
-    color: Colors.categoryGastroenterology,
-  },
-  {
-    name: 'Laboratory',
-    icon: 'flask-outline',
-    color: Colors.categoryLaboratory,
-  },
-  {
-    name: 'Vaccination',
-    icon: 'needle',
-    color: Colors.categoryVaccination,
-  },
+  { name: 'Dentistry', icon: 'tooth-outline', color: '#DC9497' },
+  { name: 'Cardiology', icon: 'heart-plus', color: '#93C19E' },
+  { name: 'Pulmonology', icon: 'lungs', color: '#F5AD7E' },
+  { name: 'Dermatology', icon: 'face-outline', color: '#ACA1CD' },
+  { name: 'Neurology', icon: 'brain', color: '#4D9B91' },
+  { name: 'Gastroenterology', icon: 'stomach', color: '#E3A5B5' },
+  { name: 'Gynecology', icon: 'human-male-female', color: '#8EB7D9' },
+  { name: 'Pediatrics', icon: 'baby-face-outline', color: '#D5B58A' },
 ];
 
 export const medicalCenters = [
+  
   {
     name: 'Sunrise Health Clinic',
     address: '123 Oak Street, CA 98765',
@@ -74,4 +42,75 @@ export const medicalCenters = [
     type: 'Hospital',
     image: require('@/assets/images/homepage/medicalimg3.png'),
   },
+  {
+    name: 'Apollo Care Hospital',
+    address: '78 MG Road, Bengaluru, India',
+    rating: '4.9',
+    reviews: '1,245 Reviews',
+    distance: '4.1 km',
+    time: '30min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg1.png'),
+  },
+  {
+    name: 'CityLife Multispeciality Hospital',
+    address: '42 Residency Road, Bengaluru, India',
+    rating: '4.7',
+    reviews: '856 Reviews',
+    distance: '5.3 km',
+    time: '35min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg2.png'),
+  },
+  {
+    name: 'Wellness Point Hospital',
+    address: '16 Park Street, Chennai, India',
+    rating: '4.8',
+    reviews: '634 Reviews',
+    distance: '6.2 km',
+    time: '42min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg3.png'),
+  },
+  {
+    name: 'CarePlus Medical Hospital',
+    address: '91 Lake View Road, Hyderabad, India',
+    rating: '4.6',
+    reviews: '527 Reviews',
+    distance: '7.4 km',
+    time: '48min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg1.png'),
+  },
+  {
+    name: 'Green Valley Medical Center',
+    address: '25 Richmond Road, Bengaluru, India',
+    rating: '4.7',
+    reviews: '718 Reviews',
+    distance: '5.8 km',
+    time: '38min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg2.png'),
+  },
+  {
+    name: 'SunCare Multispeciality Hospital',
+    address: '63 Bannerghatta Road, Bengaluru, India',
+    rating: '4.9',
+    reviews: '934 Reviews',
+    distance: '6.5 km',
+    time: '42min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg3.png'),
+  },
+  {
+    name: 'Prime Health Hospital',
+    address: '18 Indiranagar Main Road, Bengaluru, India',
+    rating: '4.6',
+    reviews: '486 Reviews',
+    distance: '3.9 km',
+    time: '28min',
+    type: 'Hospital',
+    image: require('@/assets/images/homepage/medicalimg1.png'),
+  },
+  
 ];

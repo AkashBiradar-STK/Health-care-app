@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import {
   Alert,
   Image,
@@ -10,12 +11,14 @@ import {
   Text,
   View,
 } from 'react-native';
+
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
 
 import NavItem from '@/components/home/NavItem';
 import { Colors } from '@/constants/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const profileOptions = [
   {
@@ -23,11 +26,11 @@ const profileOptions = [
     icon: 'person-outline',
     onPress: () => router.push('/profile'),
   },
-{
-  label: 'Favorite',
-  icon: 'heart-outline',
-  onPress: () => router.push('/favorites'),
-},
+  {
+    label: 'Favorite',
+    icon: 'heart-outline',
+    onPress: () => router.push('/favorites'),
+  },
   {
     label: 'Notifications',
     icon: 'notifications-outline',
@@ -52,7 +55,29 @@ const profileOptions = [
 
 export default function ProfileDashboardScreen() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState('');
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+useEffect(() => {
+  const loadProfileData = async () => {
+    try {
+      const savedName = await AsyncStorage.getItem('profileName');
+      const savedImage = await AsyncStorage.getItem('profileImage');
+
+      if (savedName) {
+        setProfileName(savedName);
+      }
+
+      if (savedImage) {
+        setProfileImage(savedImage);
+      }
+    } catch (error) {
+      console.error('Failed to load profile data:', error);
+    }
+  };
+
+  loadProfileData();
+}, []);
 
   // ----------------------------------------
   // PICK PROFILE IMAGE
@@ -124,7 +149,7 @@ export default function ProfileDashboardScreen() {
               ) : (
                 <Ionicons
                   name="person"
-                  size={82}
+                  size={85}
                   color={Colors.disabled}
                 />
               )}
@@ -143,13 +168,11 @@ export default function ProfileDashboardScreen() {
               />
             </Pressable>
 
-            <Text style={styles.name}>
-              Daniel Martinez
-            </Text>
-
-            <Text style={styles.phone}>
-              +123 856479683
-            </Text>
+            {profileName ? (
+              <Text style={styles.name}>
+                {profileName}
+              </Text>
+            ) : null}
           </View>
 
           {/* ========================================
@@ -377,13 +400,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
 
-  phone: {
-    marginTop: 4,
-    fontSize: 13,
-    lineHeight: 18,
-    color: Colors.secondaryText,
-  },
-
   /* ============================================
      PROFILE OPTIONS
   ============================================ */
@@ -427,6 +443,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.homeNavBorder,
   },
+
   /* ============================================
      LOGOUT OVERLAY
   ============================================ */
@@ -517,4 +534,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.white,
   },
-})
+});

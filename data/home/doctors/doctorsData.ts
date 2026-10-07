@@ -9,6 +9,26 @@ export type Doctor = {
 };
 
 export const doctors: Doctor[] = [
+{
+  id: 'doctor-9',
+  name: 'Dr. Priya Sharma',
+  specialty: 'Dentist',
+  location: 'Smile Care Dental Clinic, Bengaluru, India',
+  rating: '4.8',
+  reviews: '1,246 Reviews',
+  image: require('@/assets/images/onboarding/doctor-2.png'),
+},
+
+{
+  id: 'doctor-10',
+  name: 'Dr. Arjun Patel',
+  specialty: 'Gastroenterologist',
+  location: 'Digestive Care Center, Mumbai, India',
+  rating: '4.7',
+  reviews: '982 Reviews',
+  image: require('@/assets/images/onboarding/doctor-3.png'),
+},
+
   {
     id: 'doctor-1',
     name: 'Dr. Ashwini Mehta',

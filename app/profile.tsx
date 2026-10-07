@@ -1,10 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
+
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
+
 import * as ImagePicker from 'expo-image-picker';
+
 import { router } from 'expo-router';
+
 import { useState } from 'react';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   Alert,
   Image,
@@ -39,6 +46,14 @@ export default function ProfileScreen() {
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
+  const [errors, setErrors] = useState({
+    name: '',
+    nickname: '',
+    email: '',
+    dateOfBirth: '',
+    gender: '',
+  });
+
   // ================= DATE PICKER =================
 
   const handleDateChange = (
@@ -51,12 +66,67 @@ export default function ProfileScreen() {
 
     if (selectedDate) {
       setDateOfBirth(selectedDate);
+
+      setErrors((previous) => ({
+        ...previous,
+        dateOfBirth: '',
+      }));
     }
   };
 
   // ================= PROFILE IMAGE =================
 
-  const handlePickImage = async () => {
+  const handlePickImage = () => {
+    Alert.alert(
+      'Profile Picture',
+      'Choose an option',
+      [
+        {
+          text: 'Take Photo',
+          onPress: handleTakePhoto,
+        },
+        {
+          text: 'Select from Gallery',
+          onPress: handleSelectFromGallery,
+        },
+        {
+          text: 'Remove Photo',
+          style: 'destructive',
+          onPress: () => setProfileImage(null),
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+    );
+  };
+
+  const handleTakePhoto = async () => {
+    const permission =
+      await ImagePicker.requestCameraPermissionsAsync();
+
+    if (!permission.granted) {
+      Alert.alert(
+        'Permission Required',
+        'Please allow camera access to take a profile picture.',
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri);
+    }
+  };
+
+  const handleSelectFromGallery = async () => {
     const permission =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -85,35 +155,67 @@ export default function ProfileScreen() {
   const isValidEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  const isFormComplete =
-    name.trim() &&
-    nickname.trim() &&
-    email.trim() &&
-    dateOfBirth &&
-    gender;
-
   // ================= SAVE =================
 
-const handleSave = async () => {
-  if (!isFormComplete) {
-    Alert.alert(
-      'Incomplete Profile',
-      'Please complete your Name, Nickname, Email, Date of Birth and Gender.',
-    );
-    return;
-  }
+  const handleSave = async () => {
+    const newErrors = {
+      name: name.trim() ? '' : 'Name is required',
+      nickname: nickname.trim() ? '' : 'Nickname is required',
+      email: email.trim() ? '' : 'Email is required',
+      dateOfBirth: dateOfBirth
+        ? ''
+        : 'Date of Birth is required',
+      gender: gender ? '' : 'Gender is required',
+    };
 
-  if (!isValidEmail(email.trim())) {
-    Alert.alert(
-      'Invalid Email',
-      'Please enter a valid email address.',
-    );
-    return;
-  }
+    setErrors(newErrors);
 
-  // Profile is valid and completed
-  router.push('/congratulations');
-};
+    // Stop if any required field is missing
+    if (
+      Object.values(newErrors).some(
+        (error) => error !== '',
+      )
+    ) {
+      return;
+    }
+
+    // Validate email format
+    if (!isValidEmail(email.trim())) {
+      setErrors((previous) => ({
+        ...previous,
+        email: 'Please enter a valid email address.',
+      }));
+      return;
+    }
+
+    try {
+      // Save the name entered by the user
+      await AsyncStorage.setItem(
+        'profileName',
+        name.trim(),
+      );
+
+      // Save the profile image
+      if (profileImage) {
+        await AsyncStorage.setItem(
+          'profileImage',
+          profileImage,
+        );
+      } else {
+        await AsyncStorage.removeItem('profileImage');
+      }
+
+      // Profile is valid and completed
+      router.push('/congratulations');
+    } catch (error) {
+      console.error('Failed to save profile:', error);
+
+      Alert.alert(
+        'Error',
+        'Unable to save your profile. Please try again.',
+      );
+    }
+  };
 
   // ================= DATE FORMAT =================
 
@@ -186,27 +288,78 @@ const handleSave = async () => {
 
         <View style={styles.form}>
 
+          {/* NAME */}
+
           <FormInput
-            placeholder="Michael Jordan"
+            placeholder="Michael Jordan *"
             value={name}
-            onChangeText={setName}
+            onChangeText={(text) => {
+              setName(text);
+
+              if (text.trim()) {
+                setErrors((previous) => ({
+                  ...previous,
+                  name: '',
+                }));
+              }
+            }}
             autoCapitalize="words"
           />
 
-          <FormInput
-            placeholder="Nickname"
-            value={nickname}
-            onChangeText={setNickname}
-          />
+          {errors.name ? (
+            <Text style={styles.errorText}>
+              {errors.name}
+            </Text>
+          ) : null}
+
+          {/* NICKNAME */}
 
           <FormInput
-            placeholder="name@example.com"
+            placeholder="Nickname *"
+            value={nickname}
+            onChangeText={(text) => {
+              setNickname(text);
+
+              if (text.trim()) {
+                setErrors((previous) => ({
+                  ...previous,
+                  nickname: '',
+                }));
+              }
+            }}
+          />
+
+          {errors.nickname ? (
+            <Text style={styles.errorText}>
+              {errors.nickname}
+            </Text>
+          ) : null}
+
+          {/* EMAIL */}
+
+          <FormInput
+            placeholder="name@example.com *"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(text) => {
+              setEmail(text);
+
+              if (text.trim()) {
+                setErrors((previous) => ({
+                  ...previous,
+                  email: '',
+                }));
+              }
+            }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
           />
+
+          {errors.email ? (
+            <Text style={styles.errorText}>
+              {errors.email}
+            </Text>
+          ) : null}
 
           {/* DATE OF BIRTH */}
 
@@ -226,13 +379,22 @@ const handleSave = async () => {
                 dateOfBirth && styles.selectedText,
               ]}
             >
-              {formattedDate || 'Date of Birth'}
+              {formattedDate || 'Date of Birth *'}
             </Text>
           </Pressable>
 
+          {errors.dateOfBirth ? (
+            <Text style={styles.errorText}>
+              {errors.dateOfBirth}
+            </Text>
+          ) : null}
+
           {showDatePicker && (
             <DateTimePicker
-              value={dateOfBirth || new Date(2000, 0, 1)}
+              value={
+                dateOfBirth ||
+                new Date(2000, 0, 1)
+              }
               mode="date"
               display="default"
               maximumDate={new Date()}
@@ -252,7 +414,7 @@ const handleSave = async () => {
                 gender && styles.selectedText,
               ]}
             >
-              {gender || 'Gender'}
+              {gender || 'Gender *'}
             </Text>
 
             <Ionicons
@@ -262,12 +424,17 @@ const handleSave = async () => {
             />
           </Pressable>
 
+          {errors.gender ? (
+            <Text style={styles.errorText}>
+              {errors.gender}
+            </Text>
+          ) : null}
+
           {/* SAVE */}
 
           <CustomButton
             title="Save"
             onPress={handleSave}
-            disabled={!isFormComplete}
           />
 
         </View>
@@ -278,15 +445,21 @@ const handleSave = async () => {
           visible={showGenderModal}
           transparent
           animationType="fade"
-          onRequestClose={() => setShowGenderModal(false)}
+          onRequestClose={() =>
+            setShowGenderModal(false)
+          }
         >
           <Pressable
             style={styles.modalOverlay}
-            onPress={() => setShowGenderModal(false)}
+            onPress={() =>
+              setShowGenderModal(false)
+            }
           >
             <Pressable
               style={styles.genderModal}
-              onPress={(event) => event.stopPropagation()}
+              onPress={(event) =>
+                event.stopPropagation()
+              }
             >
               <Text style={styles.genderTitle}>
                 Select Gender
@@ -299,6 +472,11 @@ const handleSave = async () => {
                   onPress={() => {
                     setGender(option);
                     setShowGenderModal(false);
+
+                    setErrors((previous) => ({
+                      ...previous,
+                      gender: '',
+                    }));
                   }}
                 >
                   <Text style={styles.genderOptionText}>
@@ -324,6 +502,7 @@ const handleSave = async () => {
 }
 
 const styles = StyleSheet.create({
+
   // ================= CONTAINER =================
 
   container: {
@@ -423,6 +602,12 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
 
+  errorText: {
+    marginTop: -10,
+    fontSize: 12,
+    color: '#D32F2F',
+  },
+
   // ================= GENDER MODAL =================
 
   modalOverlay: {
@@ -461,4 +646,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.text,
   },
+
 });
