@@ -321,13 +321,14 @@ const styles = {
     backgroundColor: Colors.white,
   },
 
-  header: {
-    height: 70,
-    paddingHorizontal: 24,
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'space-between' as const,
-  },
+header: {
+  height: 70,
+  paddingHorizontal: 24,
+  flexDirection: 'row' as const,
+  alignItems: 'center' as const,
+  justifyContent: 'space-between' as const,
+  transform: [{ translateY: 20 }],
+},
 
   backButton: {
     width: 40,

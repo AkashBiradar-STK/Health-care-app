@@ -448,25 +448,24 @@ const styles = StyleSheet.create({
      LOGOUT OVERLAY
   ============================================ */
 
-  logoutOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.38)',
-    justifyContent: 'flex-end',
-  },
+logoutOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.38)',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 20,
+},
 
-  /* ============================================
-     LOGOUT MODAL
-  ============================================ */
-
-  logoutModal: {
-    width: '100%',
-    backgroundColor: Colors.white,
-    borderTopLeftRadius: 52,
-    borderTopRightRadius: 52,
-    paddingTop: 42,
-    paddingHorizontal: 48,
-    paddingBottom: 36,
-  },
+logoutModal: {
+  width: '100%',
+  maxWidth: 420,
+  backgroundColor: Colors.white,
+  borderRadius: 24,
+  paddingTop: 32,
+  paddingHorizontal: 24,
+  paddingBottom: 28,
+  alignSelf: 'center',
+},
 
   logoutTitle: {
     fontSize: 24,

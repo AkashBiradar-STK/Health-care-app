@@ -47,7 +47,7 @@ export default function FavoriteHospitalCard({
           <Ionicons
             name="heart"
             size={20}
-            color={Colors.white}
+            color={Colors.primary}
           />
         </Pressable>
       </View>
