@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import {
   View,
@@ -25,6 +27,24 @@ import { styles } from '@/styles/home/homeStyles';
 export default function HomeScreen() {
   const [search, setSearch] = useState('');
   const [activeNav, setActiveNav] = useState('home');
+  const [profileName, setProfileName] = useState('');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const name = await AsyncStorage.getItem('profileName');
+        const image = await AsyncStorage.getItem('profileImage');
+
+        setProfileName(name || '');
+        setProfileImage(image);
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    };
+
+    loadProfile();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -32,45 +52,97 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Location + Notification */}
-        <View style={styles.locationRow}>
-          <View>
-            <Text style={styles.locationLabel}>
-              Location
-            </Text>
 
-            <Pressable style={styles.locationValue}>
-              <Ionicons
-                name="location"
-                size={18}
-                color={Colors.primary}
-              />
+{/* Profile + Location + Notification */}
+<View style={styles.locationRow}>
+  <View
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+      gap: 12,
+    }}
+  >
+    {/* Profile Picture */}
+    {profileImage ? (
+      <Image
+        source={{ uri: profileImage }}
+        style={{
+width: 44,
+height: 44,
+borderRadius: 22,
+        }}
+      />
+    ) : (
+      <View
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 22,
+          backgroundColor: Colors.profileBackground,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Ionicons
+          name="person"
+          size={27}
+          color={Colors.secondaryText}
+        />
+      </View>
+    )}
 
-              <Text style={styles.locationText}>
-                Seattle, USA
-              </Text>
+    {/* Name + Location */}
+    <View style={{ flex: 1, gap: 5 }}>
+      <Text
+        numberOfLines={1}
+        style={{
+          fontSize: 15,
+          fontWeight: '700',
+          color: Colors.primary,
+        }}
+      >
+        {profileName || 'Your Profile'}
+      </Text>
 
-              <Ionicons
-                name="chevron-down"
-                size={14}
-                color={Colors.homeChevron}
-              />
-            </Pressable>
-          </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+        }}
+      >
+        <Ionicons
+          name="location"
+          size={14}
+          color={Colors.secondaryText}
+        />
 
-          <Pressable
-  style={styles.notificationButton}
-  onPress={() => router.push('/notifications')}
->
-            <Ionicons
-              name="notifications"
-              size={21}
-              color={Colors.notificationIcon}
-            />
+        <Text
+          style={{
+            fontSize: 12,
+            color: Colors.secondaryText,
+          }}
+        >
+          Seattle, USA
+        </Text>
+      </View>
+    </View>
+  </View>
 
-            <View style={styles.notificationBadge} />
-          </Pressable>
-        </View>
+  {/* Notification Bell */}
+  <Pressable
+    style={styles.notificationButton}
+    onPress={() => router.push('/notifications')}
+  >
+    <Ionicons
+      name="notifications"
+      size={21}
+      color={Colors.notificationIcon}
+    />
+  </Pressable>
+</View>
+
 
         {/* Search */}
         <View style={styles.searchContainer}>
@@ -115,27 +187,27 @@ export default function HomeScreen() {
             Categories
           </Text>
 
-<Pressable onPress={() => router.push('/all-doctors')}>
-  <Text style={styles.seeAll}>
-    See All
-  </Text>
-</Pressable>
+          <Pressable onPress={() => router.push('/all-doctors')}>
+            <Text style={styles.seeAll}>
+              See All
+            </Text>
+          </Pressable>
         </View>
 
         <View style={styles.categoryGrid}>
-{categories.map((category) => (
-  <Pressable
-    key={category.name}
-    style={styles.categoryItem}
-    onPress={() =>
-      router.push({
-        pathname: '/all-doctors',
-        params: {
-          specialty: category.name,
-        },
-      })
-    }
-  >
+          {categories.map((category) => (
+            <Pressable
+              key={category.name}
+              style={styles.categoryItem}
+              onPress={() =>
+                router.push({
+                  pathname: '/all-doctors',
+                  params: {
+                    specialty: category.name,
+                  },
+                })
+              }
+            >
               <View
                 style={[
                   styles.categoryIcon,
@@ -167,11 +239,11 @@ export default function HomeScreen() {
             Nearby Medical Centers
           </Text>
 
-<Pressable onPress={() => router.push('/find-location')}>
-  <Text style={styles.seeAll}>
-    See All
-  </Text>
-</Pressable>
+          <Pressable onPress={() => router.push('/find-location')}>
+            <Text style={styles.seeAll}>
+              See All
+            </Text>
+          </Pressable>
         </View>
 
         <ScrollView
@@ -206,19 +278,19 @@ export default function HomeScreen() {
           onPress={() => router.push('/find-location')}
         />
 
-<NavItem
-  icon="calendar-outline"
-  label="Appointment"
-  active={false}
-  onPress={() => router.push('/my-bookings')}
-/>
+        <NavItem
+          icon="calendar-outline"
+          label="Appointment"
+          active={false}
+          onPress={() => router.push('/my-bookings')}
+        />
 
-<NavItem
-  icon="person-outline"
-  label="Profile"
-  active={false}
-  onPress={() => router.push('/profile-dashboard')}
-/>
+        <NavItem
+          icon="person-outline"
+          label="Profile"
+          active={false}
+          onPress={() => router.push('/profile-dashboard')}
+        />
       </View>
     </View>
   );

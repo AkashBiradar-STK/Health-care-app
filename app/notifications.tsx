@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   Pressable,
@@ -41,7 +42,8 @@ const todayNotifications: NotificationData[] = [
   {
     id: 'today-3',
     title: 'Scheduled Changed',
-message: 'You have successfully changed your appointment with Dr. Jessica Turner.',
+    message:
+      'You have successfully changed your appointment with Dr. Jessica Turner.',
     time: '8h',
     type: 'changed',
   },
@@ -72,6 +74,21 @@ export default function NotificationsScreen() {
       setToday([]);
     } else {
       setYesterday([]);
+    }
+  };
+
+  const deleteNotification = (
+    section: 'today' | 'yesterday',
+    id: string
+  ) => {
+    if (section === 'today') {
+      setToday((previous) =>
+        previous.filter((item) => item.id !== id)
+      );
+    } else {
+      setYesterday((previous) =>
+        previous.filter((item) => item.id !== id)
+      );
     }
   };
 
@@ -138,6 +155,12 @@ export default function NotificationsScreen() {
                     message={notification.message}
                     time={notification.time}
                     type={notification.type}
+                    onDelete={() =>
+                      deleteNotification(
+                        'today',
+                        notification.id
+                      )
+                    }
                   />
 
                   {index < today.length - 1 && (
@@ -176,6 +199,12 @@ export default function NotificationsScreen() {
                   message={notification.message}
                   time={notification.time}
                   type={notification.type}
+                  onDelete={() =>
+                    deleteNotification(
+                      'yesterday',
+                      notification.id
+                    )
+                  }
                 />
               ))}
             </View>

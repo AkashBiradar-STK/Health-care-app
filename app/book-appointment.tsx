@@ -454,14 +454,15 @@ const styles = {
     backgroundColor: Colors.white,
   },
 
-  header: {
-    height: 72,
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'space-between' as const,
-  },
+header: {
+  height: 72,
+  paddingHorizontal: 24,
+  paddingTop: 20,
+  flexDirection: 'row' as const,
+  alignItems: 'center' as const,
+  justifyContent: 'space-between' as const,
+  transform: [{ translateY: 10 }],
+},
 
   backButton: {
     width: 40,
@@ -483,10 +484,11 @@ const styles = {
     width: 40,
   },
 
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingBottom: 30,
-  },
+scrollContent: {
+  paddingHorizontal: 24,
+  paddingTop: 16,
+  paddingBottom: 30,
+},
 
   sectionTitle: {
     marginTop: 20,

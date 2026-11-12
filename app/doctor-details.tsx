@@ -318,6 +318,8 @@ const styles = {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
     justifyContent: 'space-between' as const,
+    transform: [{ translateY: 10 }],
+
   },
 
   backButton: {
@@ -343,10 +345,11 @@ const styles = {
     justifyContent: 'center' as const,
   },
 
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingBottom: 30,
-  },
+scrollContent: {
+  paddingHorizontal: 24,
+  paddingTop: 16,
+  paddingBottom: 30,
+},
 
   doctorCard: {
     height: 116,
@@ -415,7 +418,7 @@ const styles = {
   statsRow: {
     flexDirection: 'row' as const,
     justifyContent: 'space-between' as const,
-    marginTop: 22,
+    marginTop: 32,
   },
 
   statItem: {

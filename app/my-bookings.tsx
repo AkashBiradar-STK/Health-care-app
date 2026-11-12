@@ -152,11 +152,12 @@ const styles = {
     backgroundColor: Colors.white,
   },
 
-  header: {
-    height: 72,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-  },
+header: {
+  height: 72,
+  alignItems: 'center' as const,
+  justifyContent: 'center' as const,
+  transform: [{ translateY: 20 }],
+},
 
   headerTitle: {
     fontSize: 18,
@@ -203,13 +204,13 @@ const styles = {
 
   listContent: {
     paddingHorizontal: 24,
-    paddingTop: 14,
+    paddingTop: 20,
     paddingBottom: 100,
   },
 
   emptyContainer: {
     alignItems: 'center' as const,
-    paddingTop: 60,
+    paddingTop: 90,
   },
 
   emptyText: {

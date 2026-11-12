@@ -8,13 +8,14 @@ export const styles = StyleSheet.create({
   },
 
   /* Header */
-  header: {
-    height: 72,
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+header: {
+  height: 72,
+  paddingHorizontal: 24,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  transform: [{ translateY: 20 }],
+},
 
   backButton: {
     width: 40,
@@ -56,10 +57,11 @@ newBadgeText: {
 },
 
   /* Notification list */
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingBottom: 30,
-  },
+scrollContent: {
+  paddingHorizontal: 24,
+  paddingTop: 12,
+  paddingBottom: 30,
+},
 
   section: {
     marginTop: 14,

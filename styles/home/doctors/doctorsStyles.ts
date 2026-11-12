@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
 
-  /* Header */
+    /* Header */
   header: {
     height: 72,
     paddingHorizontal: 24,
-    paddingTop: 12,
+    paddingTop: 30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
